@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Badminton 🏸les Ninjas</title>
+<title>Badminton 🏸 les Ninjas</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -148,9 +148,9 @@ header p{font-size:.82rem;color:var(--text2);margin-top:3px}
 </div>
 
 <script>
-var players   = ['Brigitte','Céline','Danielle','Diane','Francine','Hélène','Suzanne','Sylvie'];
-var presence  = {};
-var locked    = [];
+var players = ['Brigitte','Céline','Danielle','Diane','Francine','Hélène','Suzanne','Sylvie'];
+var presence = {};
+var locked = [];
 var editingName = null;
 
 function h(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -172,11 +172,10 @@ function render(){
   var html='';
   list.forEach(function(name){
     var id=sid(name);
-    var chk=presence[name]?'checked':'';
     var isEditing=(editingName===name);
     html+=
       '<div class="prow" id="row_'+id+'">'+
-        '<input type="checkbox" id="chk_'+id+'" '+(chk?'checked':'')+' data-n="'+h(name)+'">'+
+        '<input type="checkbox" id="chk_'+id+'" '+(presence[name]?'checked':'')+' data-n="'+h(name)+'">'+
         '<span class="pname" id="nm_'+id+'" '+(isEditing?'style="display:none"':'')+'>'+h(name)+'</span>'+
         '<input class="pedit" id="ed_'+id+'" value="'+h(name)+'" data-old="'+h(name)+'" '+(isEditing?'style="display:block"':'')+' maxlength="40">'+
         '<div class="rbts">'+
@@ -276,7 +275,23 @@ function cancelEdit(name){
 
 function uncheck(name){
   presence[name]=false;
-  render();
+  var chk=document.getElementById('chk_'+sid(name));
+  if(chk){chk.checked=false;}
+  updateBadge();
+}
+
+function resetAll(){
+  presence={};
+  locked=[];
+  editingName=null;
+  // Décocher toutes les cases visuellement
+  var checkboxes=document.querySelectorAll('#plist input[type=checkbox]');
+  checkboxes.forEach(function(chk){
+    chk.checked=false;
+  });
+  document.getElementById('res').style.display='none';
+  document.getElementById('rcontent').innerHTML='';
+  updateBadge();
 }
 
 function generateTeams(){
@@ -345,13 +360,6 @@ function buildHTML(m1,rest){
   }
   o+='</div>';
   return o;
-}
-
-function resetAll(){
-  presence={};locked=[];editingName=null;
-  document.getElementById('res').style.display='none';
-  document.getElementById('rcontent').innerHTML='';
-  render();
 }
 
 document.getElementById('bAdd').addEventListener('click',addPlayer);
