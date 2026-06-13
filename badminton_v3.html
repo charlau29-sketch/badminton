@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Badminton 🏸</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f6fa;--surface:#fff;--surface2:#f0f2f8;
+  --accent:#3d7ef6;--accent-light:#e8effe;
+  --danger:#f04f4f;--danger-light:#fff0f0;
+  --warn-bg:#fff8ec;--warn-text:#a06800;--warn-border:#ffdfa0;
+  --text:#16182a;--text2:#6b7280;--border:#e8eaf0;
+  --r:16px;--rs:10px;--sh:0 2px 14px rgba(0,0,0,.07)
+}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif;
+  background:var(--bg);color:var(--text);min-height:100vh;
+  padding:20px 14px 40px
+}
+header{text-align:center;padding:20px 0 18px}
+header .ico{font-size:2.2rem;display:block;margin-bottom:6px}
+header h1{font-size:1.5rem;font-weight:800;letter-spacing:-.5px}
+header p{font-size:.82rem;color:var(--text2);margin-top:3px}
+.card{background:var(--surface);border-radius:var(--r);padding:18px 15px;margin-bottom:14px;box-shadow:var(--sh)}
+.card-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:13px}
+.add-row{display:flex;gap:8px}
+.add-row input{
+  flex:1;padding:11px 13px;border:1.5px solid var(--border);
+  border-radius:var(--rs);font-size:.95rem;outline:none;
+  background:var(--surface2);color:var(--text);-webkit-appearance:none
+}
+.add-row input:focus{border-color:var(--accent);background:#fff}
+.search-wrap{position:relative;margin-bottom:12px}
+.search-wrap input{
+  width:100%;padding:10px 13px 10px 36px;
+  border:1.5px solid var(--border);border-radius:var(--rs);
+  font-size:.9rem;outline:none;background:var(--surface2);
+  color:var(--text);-webkit-appearance:none
+}
+.search-wrap input:focus{border-color:var(--accent);background:#fff}
+.search-ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);pointer-events:none}
+.title-row{display:flex;align-items:center;margin-bottom:13px}
+.badge{
+  font-size:.78rem;font-weight:600;color:var(--accent);
+  background:var(--accent-light);border-radius:20px;
+  padding:3px 10px;margin-left:8px
+}
+.prow{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--border)}
+.prow:last-child{border-bottom:none}
+.prow input[type=checkbox]{width:22px;height:22px;accent-color:var(--accent);flex-shrink:0;cursor:pointer}
+.pname{flex:1;font-size:.97rem;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pedit{
+  flex:1;font-size:.97rem;font-weight:500;
+  border:1.5px solid var(--accent);border-radius:8px;
+  padding:5px 9px;outline:none;display:none;-webkit-appearance:none
+}
+.rbts{display:flex;gap:5px;flex-shrink:0}
+.bi{
+  width:32px;height:32px;border:none;border-radius:8px;
+  font-size:.85rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:transparent
+}
+.bi:active{opacity:.6}
+.be{background:var(--surface2);color:var(--text2)}
+.bd{background:var(--danger-light);color:var(--danger)}
+.bu{background:var(--surface2);color:var(--text2);font-size:.75rem}
+.bs{background:var(--accent-light);color:var(--accent)}
+.bc{background:var(--surface2);color:var(--text2)}
+.btn{
+  padding:14px 10px;border:none;border-radius:14px;
+  font-size:.95rem;font-weight:700;cursor:pointer;
+  -webkit-tap-highlight-color:transparent
+}
+.btn:active{opacity:.7}
+.btn-p{background:var(--accent);color:#fff}
+.btn-s{background:var(--surface2);color:var(--text2)}
+.btn-w{background:var(--warn-bg);color:var(--warn-text);border:1.5px solid var(--warn-border)}
+.btn-add{
+  background:var(--accent);color:#fff;border-radius:var(--rs);
+  padding:11px 16px;font-size:.9rem;font-weight:700;
+  border:none;cursor:pointer;flex-shrink:0;
+  -webkit-tap-highlight-color:transparent
+}
+.arow{display:flex;gap:10px;margin-bottom:14px}
+.arow .btn{flex:1}
+#res{display:none}
+.res-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
+.res-hd .card-title{margin-bottom:0}
+.mlabel{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text2);margin-bottom:9px}
+.mteams{display:flex;align-items:center;gap:9px}
+.tbox{flex:1;background:var(--accent-light);border-radius:12px;padding:12px 10px;text-align:center}
+.tbox span{display:block;font-size:.95rem;font-weight:600;color:var(--text);line-height:1.7}
+.vs{font-size:.8rem;font-weight:800;color:#ccc;flex-shrink:0}
+.wsec{margin-top:14px}
+.wlabel{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--warn-text);margin-bottom:9px}
+.wgrid{display:flex;flex-wrap:wrap;gap:8px}
+.wchip{background:var(--warn-bg);border:1.5px solid var(--warn-border);border-radius:20px;padding:6px 14px;font-size:.9rem;font-weight:600;color:var(--warn-text)}
+.wchip.solo{background:var(--surface2);border-color:var(--border);color:var(--text2)}
+.wprow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.wtag{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text2);flex-basis:100%;margin-bottom:2px}
+.div{height:1px;background:var(--border);margin:13px 0}
+.err{text-align:center;color:var(--danger);font-size:.9rem;font-weight:600;padding:8px 0}
+.empty{text-align:center;color:var(--text2);font-size:.88rem;padding:12px 0}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="ico">🏸</span>
+  <h1>Badminton Lundi</h1>
+  <p>Gestion des présences &amp; rotation des équipes</p>
+</header>
+
+<div class="card">
+  <div class="card-title">Ajouter une joueuse</div>
+  <div class="add-row">
+    <input type="text" id="iAdd" placeholder="Prénom…" maxlength="40">
+    <button class="btn-add" id="bAdd">+ Ajouter</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="title-row">
+    <span class="card-title" style="margin-bottom:0">Joueuses</span>
+    <span class="badge" id="badge">0 présente</span>
+  </div>
+  <div class="search-wrap">
+    <span class="search-ico">🔍</span>
+    <input type="text" id="iSearch" placeholder="Rechercher…">
+  </div>
+  <div id="plist"></div>
+</div>
+
+<div class="arow">
+  <button class="btn btn-p" id="bGen">🎲 Créer les équipes</button>
+  <button class="btn btn-s" id="bZero">🔄 Remettre à zéro</button>
+</div>
+
+<div class="card" id="res">
+  <div class="res-hd">
+    <span class="card-title">Résultats</span>
+    <button class="btn btn-w" id="bRemix">🔀 Remixer les attentes</button>
+  </div>
+  <div id="rcontent"></div>
+</div>
+
+<script>
+var players   = ['Brigitte','Céline','Danielle','Diane','Francine','Hélène','Suzanne','Sylvie'];
+var presence  = {};
+var locked    = [];
+var editingName = null;
+
+function h(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function sid(n){ return 'p_'+n.split('').map(function(c){return c.charCodeAt(0).toString(16)}).join(''); }
+
+function shuffle(a){
+  var b=a.slice();
+  for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}
+  return b;
+}
+
+function render(){
+  var q=(document.getElementById('iSearch').value||'').toLowerCase().trim();
+  var sorted=players.slice().sort(function(a,b){return a.localeCompare(b,'fr');});
+  var list=q?sorted.filter(function(n){return n.toLowerCase().indexOf(q)!==-1;}):sorted;
+  var el=document.getElementById('plist');
+  if(!list.length){el.innerHTML='<div class="empty">Aucun résultat.</div>';updateBadge();return;}
+
+  var html='';
+  list.forEach(function(name){
+    var id=sid(name);
+    var chk=presence[name]?'checked':'';
+    var isEditing=(editingName===name);
+    html+=
+      '<div class="prow" id="row_'+id+'">'+
+        '<input type="checkbox" id="chk_'+id+'" '+(chk?'checked':'')+' data-n="'+h(name)+'">'+
+        '<span class="pname" id="nm_'+id+'" '+(isEditing?'style="display:none"':'')+'>'+h(name)+'</span>'+
+        '<input class="pedit" id="ed_'+id+'" value="'+h(name)+'" data-old="'+h(name)+'" '+(isEditing?'style="display:block"':'')+' maxlength="40">'+
+        '<div class="rbts">'+
+          '<button class="bi bu" data-n="'+h(name)+'" data-a="ux">✕</button>'+
+          '<button class="bi be" id="eb_'+id+'" data-n="'+h(name)+'" data-a="ed" '+(isEditing?'style="display:none"':'')+'>✏️</button>'+
+          '<button class="bi bs" id="sb_'+id+'" data-n="'+h(name)+'" data-a="sv" '+(isEditing?'':'style="display:none"')+'>✓</button>'+
+          '<button class="bi bc" id="cb_'+id+'" data-n="'+h(name)+'" data-a="cx" '+(isEditing?'':'style="display:none"')+'>✕</button>'+
+          '<button class="bi bd" data-n="'+h(name)+'" data-a="dl">🗑</button>'+
+        '</div>'+
+      '</div>';
+  });
+  el.innerHTML=html;
+  updateBadge();
+
+  el.querySelectorAll('input[type=checkbox]').forEach(function(c){
+    c.addEventListener('change',function(){
+      presence[this.dataset.n]=this.checked;
+      updateBadge();
+    });
+  });
+
+  el.querySelectorAll('[data-a]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var a=this.dataset.a, n=this.dataset.n;
+      if(a==='ux'){uncheck(n);}
+      else if(a==='ed'){startEdit(n);}
+      else if(a==='sv'){saveEdit(n);}
+      else if(a==='cx'){cancelEdit(n);}
+      else if(a==='dl'){del(n);}
+    });
+  });
+
+  el.querySelectorAll('.pedit').forEach(function(inp){
+    inp.addEventListener('keydown',function(e){
+      var old=this.dataset.old;
+      if(e.key==='Enter'){saveEdit(old);}
+      if(e.key==='Escape'){cancelEdit(old);}
+    });
+  });
+}
+
+function updateBadge(){
+  var n=players.filter(function(p){return presence[p];}).length;
+  document.getElementById('badge').textContent=n===0?'0 présente':n===1?'1 présente':n+' présentes';
+}
+
+function addPlayer(){
+  var inp=document.getElementById('iAdd');
+  var name=inp.value.trim();
+  if(!name)return;
+  if(players.map(function(p){return p.toLowerCase();}).indexOf(name.toLowerCase())!==-1){
+    alert('Ce prénom est déjà dans la liste.');return;
+  }
+  players.push(name);
+  inp.value='';
+  render();
+}
+
+function del(name){
+  if(!confirm('Supprimer '+name+' ?'))return;
+  players=players.filter(function(p){return p!==name;});
+  delete presence[name];
+  if(editingName===name)editingName=null;
+  render();
+}
+
+function startEdit(name){
+  editingName=name;
+  render();
+  var id=sid(name);
+  var inp=document.getElementById('ed_'+id);
+  if(inp){inp.focus();inp.select();}
+}
+
+function saveEdit(oldName){
+  var id=sid(oldName);
+  var inp=document.getElementById('ed_'+id);
+  if(!inp)return;
+  var newName=inp.value.trim();
+  if(!newName||newName===oldName){cancelEdit(oldName);return;}
+  if(players.map(function(p){return p.toLowerCase();}).indexOf(newName.toLowerCase())!==-1){
+    alert('Ce prénom existe déjà.');return;
+  }
+  var idx=players.indexOf(oldName);
+  if(idx===-1)return;
+  players[idx]=newName;
+  if(presence[oldName]){presence[newName]=true;delete presence[oldName];}
+  locked=locked.map(function(n){return n===oldName?newName:n;});
+  editingName=null;
+  render();
+}
+
+function cancelEdit(name){
+  editingName=null;
+  render();
+}
+
+function uncheck(name){
+  presence[name]=false;
+  render();
+}
+
+function generateTeams(){
+  var present=players.filter(function(p){return presence[p];});
+  var res=document.getElementById('res');
+  var rc=document.getElementById('rcontent');
+  res.style.display='block';
+  if(present.length<4){
+    rc.innerHTML='<p class="err">Il faut au moins 4 joueuses présentes.</p>';
+    locked=[];return;
+  }
+  var mx=shuffle(present);
+  var m1=mx.slice(0,4);
+  var rest=mx.slice(4);
+  locked=m1.slice();
+  rc.innerHTML=buildHTML(m1,rest);
+  res.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function remixWaiting(){
+  if(!locked.length){generateTeams();return;}
+  var present=players.filter(function(p){return presence[p];});
+  var waiting=shuffle(present.filter(function(p){return locked.indexOf(p)===-1;}));
+  document.getElementById('rcontent').innerHTML=buildHTML(locked,waiting);
+  document.getElementById('res').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function buildHTML(m1,rest){
+  var o=
+    '<div style="margin-bottom:14px">'+
+      '<div class="mlabel">🎮 Match 1 — En cours</div>'+
+      '<div class="mteams">'+
+        '<div class="tbox"><span>'+h(m1[0])+'</span><span>'+h(m1[1])+'</span></div>'+
+        '<div class="vs">VS</div>'+
+        '<div class="tbox"><span>'+h(m1[2])+'</span><span>'+h(m1[3])+'</span></div>'+
+      '</div>'+
+    '</div>';
+  if(!rest.length)return o;
+  o+='<div class="div"></div>';
+  if(rest.length===4){
+    o+=
+      '<div style="margin-bottom:14px">'+
+        '<div class="mlabel">🎮 Match 2 — Prêt à jouer</div>'+
+        '<div class="mteams">'+
+          '<div class="tbox"><span>'+h(rest[0])+'</span><span>'+h(rest[1])+'</span></div>'+
+          '<div class="vs">VS</div>'+
+          '<div class="tbox"><span>'+h(rest[2])+'</span><span>'+h(rest[3])+'</span></div>'+
+        '</div>'+
+      '</div>';
+    return o;
+  }
+  o+='<div class="wsec"><div class="wlabel">⏳ En attente pour le prochain match</div>';
+  if(rest.length===1){
+    o+='<div class="wgrid"><div class="wchip solo">'+h(rest[0])+'</div></div>';
+  } else if(rest.length===2){
+    o+='<div class="wgrid"><div class="wchip">'+h(rest[0])+'</div><div class="wchip">'+h(rest[1])+'</div></div>';
+  } else if(rest.length===3){
+    o+=
+      '<div class="wprow"><span class="wtag">Duo prêt</span>'+
+        '<div class="wchip">'+h(rest[0])+'</div><div class="wchip">'+h(rest[1])+'</div></div>'+
+      '<div style="height:8px"></div>'+
+      '<div class="wprow"><span class="wtag">Attente seule</span>'+
+        '<div class="wchip solo">'+h(rest[2])+'</div></div>';
+  } else {
+    o+='<div class="wgrid">'+rest.map(function(n){return '<div class="wchip">'+h(n)+'</div>';}).join('')+'</div>';
+  }
+  o+='</div>';
+  return o;
+}
+
+function resetAll(){
+  presence={};locked=[];editingName=null;
+  document.getElementById('res').style.display='none';
+  document.getElementById('rcontent').innerHTML='';
+  render();
+}
+
+document.getElementById('bAdd').addEventListener('click',addPlayer);
+document.getElementById('iAdd').addEventListener('keydown',function(e){if(e.key==='Enter')addPlayer();});
+document.getElementById('iSearch').addEventListener('input',render);
+document.getElementById('bGen').addEventListener('click',generateTeams);
+document.getElementById('bZero').addEventListener('click',resetAll);
+document.getElementById('bRemix').addEventListener('click',remixWaiting);
+
+render();
+</script>
+</body>
+</html>
