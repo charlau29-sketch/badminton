@@ -32,15 +32,6 @@ header p{font-size:.82rem;color:var(--text2);margin-top:3px}
   background:var(--surface2);color:var(--text);-webkit-appearance:none
 }
 .add-row input:focus{border-color:var(--accent);background:#fff}
-.search-wrap{position:relative;margin-bottom:12px}
-.search-wrap input{
-  width:100%;padding:10px 13px 10px 36px;
-  border:1.5px solid var(--border);border-radius:var(--rs);
-  font-size:.9rem;outline:none;background:var(--surface2);
-  color:var(--text);-webkit-appearance:none
-}
-.search-wrap input:focus{border-color:var(--accent);background:#fff}
-.search-ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);pointer-events:none}
 .title-row{display:flex;align-items:center;margin-bottom:13px}
 .badge{
   font-size:.78rem;font-weight:600;color:var(--accent);
@@ -127,10 +118,6 @@ header p{font-size:.82rem;color:var(--text2);margin-top:3px}
     <span class="card-title" style="margin-bottom:0">Joueuses</span>
     <span class="badge" id="badge">0 présente</span>
   </div>
-  <div class="search-wrap">
-    <span class="search-ico">🔍</span>
-    <input type="text" id="iSearch" placeholder="Rechercher…">
-  </div>
   <div id="plist"></div>
 </div>
 
@@ -153,6 +140,9 @@ var presence = {};
 var locked = [];
 var editingName = null;
 
+// Toutes cochées par défaut au démarrage
+players.forEach(function(p){ presence[p] = true; });
+
 function h(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function sid(n){ return 'p_'+n.split('').map(function(c){return c.charCodeAt(0).toString(16)}).join(''); }
 
@@ -163,14 +153,12 @@ function shuffle(a){
 }
 
 function render(){
-  var q=(document.getElementById('iSearch').value||'').toLowerCase().trim();
   var sorted=players.slice().sort(function(a,b){return a.localeCompare(b,'fr');});
-  var list=q?sorted.filter(function(n){return n.toLowerCase().indexOf(q)!==-1;}):sorted;
   var el=document.getElementById('plist');
-  if(!list.length){el.innerHTML='<div class="empty">Aucun résultat.</div>';updateBadge();return;}
+  if(!sorted.length){el.innerHTML='<div class="empty">Aucune joueuse.</div>';updateBadge();return;}
 
   var html='';
-  list.forEach(function(name){
+  sorted.forEach(function(name){
     var id=sid(name);
     var isEditing=(editingName===name);
     html+=
@@ -230,6 +218,7 @@ function addPlayer(){
     alert('Ce prénom est déjà dans la liste.');return;
   }
   players.push(name);
+  presence[name]=true;
   inp.value='';
   render();
 }
@@ -281,14 +270,12 @@ function uncheck(name){
 }
 
 function resetAll(){
-  presence={};
+  // Remettre tout le monde coché par défaut
+  players.forEach(function(p){ presence[p]=true; });
   locked=[];
   editingName=null;
-  // Décocher toutes les cases visuellement
   var checkboxes=document.querySelectorAll('#plist input[type=checkbox]');
-  checkboxes.forEach(function(chk){
-    chk.checked=false;
-  });
+  checkboxes.forEach(function(chk){ chk.checked=true; });
   document.getElementById('res').style.display='none';
   document.getElementById('rcontent').innerHTML='';
   updateBadge();
@@ -364,7 +351,6 @@ function buildHTML(m1,rest){
 
 document.getElementById('bAdd').addEventListener('click',addPlayer);
 document.getElementById('iAdd').addEventListener('keydown',function(e){if(e.key==='Enter')addPlayer();});
-document.getElementById('iSearch').addEventListener('input',render);
 document.getElementById('bGen').addEventListener('click',generateTeams);
 document.getElementById('bZero').addEventListener('click',resetAll);
 document.getElementById('bRemix').addEventListener('click',remixWaiting);
