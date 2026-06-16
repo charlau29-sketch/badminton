@@ -1,369 +1,155 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Badminton 🏸 les Ninjas</title>
-
-<!-- Icône universelle pour l'onglet du navigateur (Mac/PC) -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏸%3C/text%3E%3C/svg%3E">
-
-<!-- Nouvelle version de l'icône iPhone 100% compatible et sécurisée -->
-<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI0ZGRkZGRiIvPjx0ZXh0IHk9IjAuODVlbSIgeD0iNSIgZm9udC1zaXplPSI4MCI+8J+ badmintonPC90ZXh0Pjwvc3ZnPg==">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ffffff'/%3E%3Ctext y='78' x='10' font-size='80'%3E🏸%3C/text%3E%3C/svg%3E">
-
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#f5f6fa;--surface:#fff;--surface2:#f0f2f8;
-  --accent:#3d7ef6;--accent-light:#e8effe;
-  --danger:#f04f4f;--danger-light:#fff0f0;
-  --warn-bg:#fff8ec;--warn-text:#a06800;--warn-border:#ffdfa0;
-  --text:#16182a;--text2:#6b7280;--border:#e8eaf0;
-  --r:16px;--rs:10px;--sh:0 2px 14px rgba(0,0,0,.07)
-}
-body{
-  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif;
-  background:var(--bg);color:var(--text);min-height:100vh;
-  padding:20px 14px 40px
-}
-header{text-align:center;padding:20px 0 18px}
-header .ico{font-size:2.2rem;display:block;margin-bottom:6px}
-header h1{font-size:1.5rem;font-weight:800;letter-spacing:-.5px}
-header p{font-size:.82rem;color:var(--text2);margin-top:3px}
-.card{background:var(--surface);border-radius:var(--r);padding:18px 15px;margin-bottom:14px;box-shadow:var(--sh)}
-.card-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:13px}
-.add-row{display:flex;gap:8px}
-.add-row input{
-  flex:1;padding:11px 13px;border:1.5px solid var(--border);
-  border-radius:var(--rs);font-size:.95rem;outline:none;
-  background:var(--surface2);color:var(--text);-webkit-appearance:none
-}
-.add-row input:focus{border-color:var(--accent);background:#fff}
-.title-row{display:flex;align-items:center;margin-bottom:13px}
-.badge{
-  font-size:.78rem;font-weight:600;color:var(--accent);
-  background:var(--accent-light);border-radius:20px;
-  padding:3px 10px;margin-left:8px
-}
-.prow{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--border)}
-.prow:last-child{border-bottom:none}
-.prow input[type=checkbox]{width:22px;height:22px;accent-color:var(--accent);flex-shrink:0;cursor:pointer}
-.pname{flex:1;font-size:.97rem;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pedit{
-  flex:1;font-size:.97rem;font-weight:500;
-  border:1.5px solid var(--accent);border-radius:8px;
-  padding:5px 9px;outline:none;display:none;-webkit-appearance:none
-}
-.rbts{display:flex;gap:5px;flex-shrink:0}
-.bi{
-  width:32px;height:32px;border:none;border-radius:8px;
-  font-size:.85rem;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  -webkit-tap-highlight-color:transparent
-}
-.bi:active{opacity:.6}
-.be{background:var(--surface2);color:var(--text2)}
-.bd{background:var(--danger-light);color:var(--danger)}
-.bu{background:var(--surface2);color:var(--text2);font-size:.75rem}
-.bs{background:var(--accent-light);color:var(--accent)}
-.bc{background:var(--surface2);color:var(--text2)}
-.btn{
-  padding:14px 10px;border:none;border-radius:14px;
-  font-size:.95rem;font-weight:700;cursor:pointer;
-  -webkit-tap-highlight-color:transparent
-}
-.btn:active{opacity:.7}
-.btn-p{background:var(--accent);color:#fff}
-.btn-s{background:var(--surface2);color:var(--text2)}
-.btn-w{background:var(--warn-bg);color:var(--warn-text);border:1.5px solid var(--warn-border)}
-.btn-add{
-  background:var(--accent);color:#fff;border-radius:var(--rs);
-  padding:11px 16px;font-size:.9rem;font-weight:700;
-  border:none;cursor:pointer;flex-shrink:0;
-  -webkit-tap-highlight-color:transparent
-}
-.arow{display:flex;gap:10px;margin-bottom:14px}
-.arow .btn{flex:1}
-#res{display:none}
-.res-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
-.res-hd .card-title{margin-bottom:0}
-.mlabel{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text2);margin-bottom:9px}
-.mteams{display:flex;align-items:center;gap:9px}
-.tbox{flex:1;background:var(--accent-light);border-radius:12px;padding:12px 10px;text-align:center}
-.tbox span{display:block;font-size:.95rem;font-weight:600;color:var(--text);line-height:1.7}
-.vs{font-size:.8rem;font-weight:800;color:#ccc;flex-shrink:0}
-.wsec{margin-top:14px}
-.wlabel{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--warn-text);margin-bottom:9px}
-.wgrid{display:flex;flex-wrap:wrap;gap:8px}
-.wchip{background:var(--warn-bg);border:1.5px solid var(--warn-border);border-radius:20px;padding:6px 14px;font-size:.9rem;font-weight:600;color:var(--warn-text)}
-.wchip.solo{background:var(--surface2);border-color:var(--border);color:var(--text2)}
-.wprow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.wtag{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text2);flex-basis:100%;margin-bottom:2px}
-.div{height:1px;background:var(--border);margin:13px 0}
-.err{text-align:center;color:var(--danger);font-size:.9rem;font-weight:600;padding:8px 0}
-.empty{text-align:center;color:var(--text2);font-size:.88rem;padding:12px 0}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Badminton 🏸 les Ninjas</title>
+  <link rel="apple-touch-icon" href="icone.svg?v=5">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f7;
+      color: #1d1d1f;
+    }
+    h1 {
+      text-align: center;
+      color: #0071e3;
+    }
+    .joueuses-list {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+    .joueuse {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+      font-size: 18px;
+    }
+    input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      margin-right: 12px;
+      cursor: pointer;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background-color: #0071e3;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    button:active {
+      background-color: #005bb5;
+    }
+    .terrain {
+      background: #e3f2fd;
+      border: 2px solid #0071e3;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 15px;
+    }
+    .terrain h3 {
+      margin-top: 0;
+      color: #005bb5;
+      border-bottom: 1px solid #b3e5fc;
+      padding-bottom: 5px;
+    }
+    .equipe {
+      font-size: 16px;
+      margin: 5px 0;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <span class="ico">🏸</span>
-  <h1>Badminton les Ninjas</h1>
-  <p>Gestion des présences &amp; rotation des équipes</p>
-</header>
+  <h1>Badminton 🏸 les Ninjas</h1>
+  
+  <p style="text-align: center; color: #6e6e73;">Sélectionnez les présentes pour lundi :</p>
 
-<div class="card">
-  <div class="card-title">Ajouter une joueuse</div>
-  <div class="add-row">
-    <input type="text" id="iAdd" placeholder="Prénom…" maxlength="40">
-    <button class="btn-add" id="bAdd">+ Ajouter</button>
+  <div class="joueuses-list">
+    <div class="joueuse"><input type="checkbox" id="j1" checked><label for="j1">Diane</label></div>
+    <div class="joueuse"><input type="checkbox" id="j2" checked><label for="j2">Céline</label></div>
+    <div class="joueuse"><input type="checkbox" id="j3" checked><label for="j3">Sylvie</label></div>
+    <div class="joueuse"><input type="checkbox" id="j4" checked><label for="j4">Francine</label></div>
+    <div class="joueuse"><input type="checkbox" id="j5" checked><label for="j5">Danielle</label></div>
+    <div class="joueuse"><input type="checkbox" id="j6" checked><label for="j6">Suzanne</label></div>
+    <div class="joueuse"><input type="checkbox" id="j7" checked><label for="j7">Hélène</label></div>
+    <div class="joueuse"><input type="checkbox" id="j8" checked><label for="j8">Brigitte</label></div>
   </div>
-</div>
 
-<div class="card">
-  <div class="title-row">
-    <span class="card-title" style="margin-bottom:0">Joueuses</span>
-    <span class="badge" id="badge">0 présente</span>
-  </div>
-  <div id="plist"></div>
-</div>
+  <button onclick="genererEquipes()">Générer les Terrains</button>
 
-<div class="arow">
-  <button class="btn btn-p" id="bGen">🎲 Créer les équipes</button>
-  <button class="btn btn-s" id="bZero">🔄 Remettre à zéro</button>
-</div>
+  <div id="resultats"></div>
 
-<div class="card" id="res">
-  <div class="res-hd">
-    <span class="card-title">Résultats</span>
-    <button class="btn btn-w" id="bRemix">🔀 Remixer les attentes</button>
-  </div>
-  <div id="rcontent"></div>
-</div>
+  <script>
+    function genererEquipes() {
+      const joueuses = [
+        { id: 'j1', nom: 'Diane' },
+        { id: 'j2', nom: 'Céline' },
+        { id: 'j3', nom: 'Sylvie' },
+        { id: 'j4', nom: 'Francine' },
+        { id: 'j5', nom: 'Danielle' },
+        { id: 'j6', nom: 'Suzanne' },
+        { id: 'j7', nom: 'Hélène' },
+        { id: 'j8', nom: 'Brigitte' }
+      ];
 
-<script>
-var players = ['Brigitte','Céline','Danielle','Diane','Francine','Hélène','Suzanne','Sylvie'];
-var presence = {};
-var locked = [];
-var editingName = null;
+      // Filtrer pour ne garder que celles qui sont cochées
+      let presentes = joueuses
+        .filter(j => document.getElementById(j.id).checked)
+        .map(j => j.nom);
 
-// Toutes cochées par défaut au démarrage
-players.forEach(function(p){ presence[p] = true; });
+      // Mélanger la liste au hasard
+      for (let i = presentes.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [presentes[i], presentes[j]] = [presentes[j], presentes[i]];
+      }
 
-function h(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function sid(n){ return 'p_'+n.split('').map(function(c){return c.charCodeAt(0).toString(16)}).join(''); }
+      const divResultats = document.getElementById('resultats');
+      divResultats.innerHTML = '';
 
-function shuffle(a){
-  var b=a.slice();
-  for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}
-  return b;
-}
+      if (presentes.length < 4) {
+        divResultats.innerHTML = '<p style="color: red; text-align: center;">Il faut au moins 4 joueuses pour faire un match !</p>';
+        return;
+      }
 
-function render(){
-  var sorted=players.slice().sort(function(a,b){return a.localeCompare(b,'fr');});
-  var el=document.getElementById('plist');
-  if(!sorted.length){el.innerHTML='<div class="empty">Aucune joueuse.</div>';updateBadge();return;}
+      // Terrain 1 (4 premières joueuses)
+      let html = '<div class="terrain"><h3>Terrain 1</h3>';
+      html += '<div class="equipe"><strong>Équipe A :</strong> ' + presentes[0] + ' et ' + presentes[1] + '</div>';
+      html += '<div class="equipe"><strong>Équipe B :</strong> ' + presentes[2] + ' et ' + presentes[3] + '</div>';
+      html += '</div>';
 
-  var html='';
-  sorted.forEach(function(name){
-    var id=sid(name);
-    var isEditing=(editingName===name);
-    html+=
-      '<div class="prow" id="row_'+id+'">'+
-        '<input type="checkbox" id="chk_'+id+'" '+(presence[name]?'checked':'')+' data-n="'+h(name)+'">'+
-        '<span class="pname" id="nm_'+id+'" '+(isEditing?'style="display:none"':'')+'>'+h(name)+'</span>'+
-        '<input class="pedit" id="ed_'+id+'" value="'+h(name)+'" data-old="'+h(name)+'" '+(isEditing?'style="display:block"':'')+' maxlength="40">'+
-        '<div class="rbts">'+
-          '<button class="bi bu" data-n="'+h(name)+'" data-a="ux">✕</button>'+
-          '<button class="bi be" id="eb_'+id+'" data-n="'+h(name)+'" data-a="ed" '+(isEditing?'style="display:none"':'')+'>✏️</button>'+
-          '<button class="bi bs" id="sb_'+id+'" data-n="'+h(name)+'" data-a="sv" '+(isEditing?'':'style="display:none"')+'>✓</button>'+
-          '<button class="bi bc" id="cb_'+id+'" data-n="'+h(name)+'" data-a="cx" '+(isEditing?'':'style="display:none"')+'>✕</button>'+
-          '<button class="bi bd" data-n="'+h(name)+'" data-a="dl">🗑</button>'+
-        '</div>'+
-      '</div>';
-  });
-  el.innerHTML=html;
-  updateBadge();
+      // Terrain 2 (si au moins 8 joueuses)
+      if (presentes.length >= 8) {
+        html += '<div class="terrain"><h3>Terrain 2</h3>';
+        html += '<div class="equipe"><strong>Équipe A :</strong> ' + presentes[4] + ' et ' + presentes[5] + '</div>';
+        html += '<div class="equipe"><strong>Équipe B :</strong> ' + presentes[6] + ' et ' + presentes[7] + '</div>';
+        html += '</div>';
+      } 
+      // S'il y a des remplaçantes (entre 5 et 7 joueuses)
+      else if (presentes.length > 4) {
+        html += '<div class="terrain" style="background: #fff3e0; border-color: #ff9800;">';
+        html += '<h3 style="color: #e65100; border-color: #ffe0b2;">En attente / Rotation</h3>';
+        let enAttente = presentes.slice(4);
+        html += '<div class="equipe"><strong>Joueuses en pause :</strong> ' + enAttente.join(', ') + '</div>';
+        html += '</div>';
+      }
 
-  el.querySelectorAll('input[type=checkbox]').forEach(function(c){
-    c.addEventListener('change',function(){
-      presence[this.dataset.n]=this.checked;
-      updateBadge();
-    });
-  });
+      divResultats.innerHTML = html;
+    }
+  </script>
 
-  el.querySelectorAll('[data-a]').forEach(function(b){
-    b.addEventListener('click',function(){
-      var a=this.dataset.a, n=this.dataset.n;
-      if(a==='ux'){uncheck(n);}
-      else if(a==='ed'){startEdit(n);}
-      else if(a==='sv'){saveEdit(n);}
-      else if(a==='cx'){cancelEdit(n);}
-      else if(a==='dl'){del(n);}
-    });
-  });
-
-  el.querySelectorAll('.pedit').forEach(function(inp){
-    inp.addEventListener('keydown',function(e){
-      var old=this.dataset.old;
-      if(e.key==='Enter'){saveEdit(old);}
-      if(e.key==='Escape'){cancelEdit(old);}
-    });
-  });
-}
-
-function updateBadge(){
-  var n=players.filter(function(p){return presence[p];}).length;
-  document.getElementById('badge').textContent=n===0?'0 présente':n===1?'1 présente':n+' présentes';
-}
-
-function addPlayer(){
-  var inp=document.getElementById('iAdd');
-  var name=inp.value.trim();
-  if(!name)return;
-  if(players.map(function(p){return p.toLowerCase();}).indexOf(name.toLowerCase())!==-1){
-    alert('Ce prénom est déjà dans la liste.');return;
-  }
-  players.push(name);
-  presence[name]=true;
-  inp.value='';
-  render();
-}
-
-function del(name){
-  if(!confirm('Supprimer '+name+' ?'))return;
-  players=players.filter(function(p){return p!==name;});
-  delete presence[name];
-  if(editingName===name)editingName=null;
-  render();
-}
-
-function startEdit(name){
-  editingName=name;
-  render();
-  var id=sid(name);
-  var inp=document.getElementById('ed_'+id);
-  if(inp){inp.focus();inp.select();}
-}
-
-function saveEdit(oldName){
-  var id=sid(oldName);
-  var inp=document.getElementById('ed_'+id);
-  if(!inp)return;
-  var newName=inp.value.trim();
-  if(!newName||newName===oldName){cancelEdit(oldName);return;}
-  if(players.map(function(p){return p.toLowerCase();}).indexOf(newName.toLowerCase())!==-1){
-    alert('Ce prénom existe déjà.');return;
-  }
-  var idx=players.indexOf(oldName);
-  if(idx===-1)return;
-  players[idx]=newName;
-  if(presence[oldName]){presence[newName]=true;delete presence[oldName];}
-  locked=locked.map(function(n){return n===oldName?newName:n;});
-  editingName=null;
-  render();
-}
-
-function cancelEdit(name){
-  editingName=null;
-  render();
-}
-
-function uncheck(name){
-  presence[name]=false;
-  var chk=document.getElementById('chk_'+sid(name));
-  if(chk){chk.checked=false;}
-  updateBadge();
-}
-
-function resetAll(){
-  // Remettre tout le monde coché par défaut
-  players.forEach(function(p){ presence[p]=true; });
-  locked=[];
-  editingName=null;
-  var checkboxes=document.querySelectorAll('#plist input[type=checkbox]');
-  checkboxes.forEach(function(chk){ chk.checked=true; });
-  document.getElementById('res').style.display='none';
-  document.getElementById('rcontent').innerHTML='';
-  updateBadge();
-}
-
-function generateTeams(){
-  var present=players.filter(function(p){return presence[p];});
-  var res=document.getElementById('res');
-  var rc=document.getElementById('rcontent');
-  res.style.display='block';
-  if(present.length<4){
-    rc.innerHTML='<p class="err">Il faut au moins 4 joueuses présentes.</p>';
-    locked=[];return;
-  }
-  var mx=shuffle(present);
-  var m1=mx.slice(0,4);
-  var rest=mx.slice(4);
-  locked=m1.slice();
-  rc.innerHTML=buildHTML(m1,rest);
-  res.scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-function remixWaiting(){
-  if(!locked.length){generateTeams();return;}
-  var present=players.filter(function(p){return presence[p];});
-  var waiting=shuffle(present.filter(function(p){return locked.indexOf(p)===-1;}));
-  document.getElementById('rcontent').innerHTML=buildHTML(locked,waiting);
-  document.getElementById('res').scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-function buildHTML(m1,rest){
-  var o=
-    '<div style="margin-bottom:14px">'+
-      '<div class="mlabel">🎮 Match 1 — En cours</div>'+
-      '<div class="mteams">'+
-        '<div class="tbox"><span>'+h(m1[0])+'</span><span>'+h(m1[1])+'</span></div>'+
-        '<div class="vs">VS</div>'+
-        '<div class="tbox"><span>'+h(m1[2])+'</span><span>'+h(m1[3])+'</span></div>'+
-      '</div>'+
-    '</div>';
-  if(!rest.length)return o;
-  o+='<div class="div"></div>';
-  if(rest.length===4){
-    o+=
-      '<div style="margin-bottom:14px">'+
-        '<div class="mlabel">🎮 Match 2 — Prêt à jouer</div>'+
-        '<div class="mteams">'+
-          '<div class="tbox"><span>'+h(rest[0])+'</span><span>'+h(rest[1])+'</span></div>'+
-          '<div class="vs">VS</div>'+
-          '<div class="tbox"><span>'+h(rest[2])+'</span><span>'+h(rest[3])+'</span></div>'+
-        '</div>'+
-      '</div>';
-    return o;
-  }
-  o+='<div class="wsec"><div class="wlabel">⏳ En attente pour le prochain match</div>';
-  if(rest.length===1){
-    o+='<div class="wgrid"><div class="wchip solo">'+h(rest[0])+'</div></div>';
-  } else if(rest.length===2){
-    o+='<div class="wgrid"><div class="wchip">'+h(rest[0])+'</div><div class="wchip">'+h(rest[1])+'</div></div>';
-  } else if(rest.length===3){
-    o+=
-      '<div class="wprow"><span class="wtag">Duo prêt</span>'+
-        '<div class="wchip">'+h(rest[0])+'</div><div class="wchip">'+h(rest[1])+'</div></div>'+
-      '<div style="height:8px"></div>'+
-      '<div class="wprow"><span class="wtag">Attente seule</span>'+
-        '<div class="wchip solo">'+h(rest[2])+'</div></div>';
-  } else {
-    o+='<div class="wgrid">'+rest.map(function(n){return '<div class="wchip">'+h(n)+'</div>';}).join('')+'</div>';
-  }
-  o+='</div>';
-  return o;
-}
-
-document.getElementById('bAdd').addEventListener('click',addPlayer);
-document.getElementById('iAdd').addEventListener('keydown',function(e){if(e.key==='Enter')addPlayer();});
-document.getElementById('bGen').addEventListener('click',generateTeams);
-document.getElementById('bZero').addEventListener('click',resetAll);
-document.getElementById('bRemix').addEventListener('click',remixWaiting);
-
-render();
-</script>
 </body>
 </html>
