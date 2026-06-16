@@ -7,148 +7,256 @@
   <link rel="apple-touch-icon" href="icone.svg?v=5">
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      max-width: 500px;
+      font-family: Arial, sans-serif;
+      max-width: 600px;
       margin: 0 auto;
       padding: 20px;
-      background-color: #f5f5f7;
-      color: #1d1d1f;
+      background-color: #f4f4f9;
+      color: #333;
     }
     h1 {
       text-align: center;
-      color: #0071e3;
+      color: #2c3e50;
     }
-    .joueuses-list {
+    .section {
       background: white;
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       margin-bottom: 20px;
     }
-    .joueuse {
+    h2 {
+      margin-top: 0;
+      color: #34495e;
+      border-bottom: 2px solid #ecf0f1;
+      padding-bottom: 10px;
+    }
+    .joueuse-item {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       margin: 10px 0;
-      font-size: 18px;
+      padding: 5px 0;
+    }
+    .joueuse-gauche {
+      display: flex;
+      align-items: center;
     }
     input[type="checkbox"] {
-      width: 22px;
-      height: 22px;
-      margin-right: 12px;
-      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
     }
-    button {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      background-color: #0071e3;
+    .nom-joueuse {
+      font-size: 16px;
+    }
+    .btn-supprimer {
+      background-color: #e74c3c;
       color: white;
       border: none;
-      border-radius: 12px;
-      font-size: 18px;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn-supprimer:hover {
+      background-color: #c0392b;
+    }
+    .form-ajouter {
+      display: flex;
+      margin-top: 15px;
+    }
+    .form-ajouter input {
+      flex: 1;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px 0 0 4px;
+    }
+    .form-ajouter button {
+      padding: 8px 15px;
+      background-color: #2ecc71;
+      color: white;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+    }
+    .form-ajouter button:hover {
+      background-color: #27ae60;
+    }
+    .btn-principal {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      margin-bottom: 20px;
+      margin-top: 20px;
     }
-    button:active {
-      background-color: #005bb5;
+    .btn-principal:hover {
+      background-color: #2980b9;
     }
     .terrain {
-      background: #e3f2fd;
-      border: 2px solid #0071e3;
+      background: #e8f4f8;
+      border: 2px solid #3498db;
       padding: 15px;
-      border-radius: 12px;
+      border-radius: 6px;
       margin-top: 15px;
     }
     .terrain h3 {
       margin-top: 0;
-      color: #005bb5;
-      border-bottom: 1px solid #b3e5fc;
-      padding-bottom: 5px;
+      color: #2980b9;
     }
     .equipe {
       font-size: 16px;
-      margin: 5px 0;
+      margin: 8px 0;
+    }
+    .attente {
+      background: #fef9e7;
+      border: 2px solid #f1c40f;
+      padding: 15px;
+      border-radius: 6px;
+      margin-top: 15px;
+    }
+    .attente h3 {
+      margin-top: 0;
+      color: #d35400;
     }
   </style>
 </head>
 <body>
 
   <h1>Badminton 🏸 les Ninjas</h1>
-  
-  <p style="text-align: center; color: #6e6e73;">Sélectionnez les présentes pour lundi :</p>
 
-  <div class="joueuses-list">
-    <div class="joueuse"><input type="checkbox" id="j1" checked><label for="j1">Diane</label></div>
-    <div class="joueuse"><input type="checkbox" id="j2" checked><label for="j2">Céline</label></div>
-    <div class="joueuse"><input type="checkbox" id="j3" checked><label for="j3">Sylvie</label></div>
-    <div class="joueuse"><input type="checkbox" id="j4" checked><label for="j4">Francine</label></div>
-    <div class="joueuse"><input type="checkbox" id="j5" checked><label for="j5">Danielle</label></div>
-    <div class="joueuse"><input type="checkbox" id="j6" checked><label for="j6">Suzanne</label></div>
-    <div class="joueuse"><input type="checkbox" id="j7" checked><label for="j7">Hélène</label></div>
-    <div class="joueuse"><input type="checkbox" id="j8" checked><label for="j8">Brigitte</label></div>
+  <div class="section">
+    <h2>Gestion des Joueuses</h2>
+    <div id="listeJoueuses"></div>
+    
+    <div class="form-ajouter">
+      <input type="text" id="nouveauNom" placeholder="Nom de la joueuse">
+      <button onclick="ajouterJoueuse()">Ajouter</button>
+    </div>
   </div>
 
-  <button onclick="genererEquipes()">Générer les Terrains</button>
+  <button class="btn-principal" onclick="genererRotation()">Générer le Match & la Rotation</button>
 
-  <div id="resultats"></div>
+  <div id="zoneResultats"></div>
 
   <script>
-    function genererEquipes() {
-      const joueuses = [
-        { id: 'j1', nom: 'Diane' },
-        { id: 'j2', nom: 'Céline' },
-        { id: 'j3', nom: 'Sylvie' },
-        { id: 'j4', nom: 'Francine' },
-        { id: 'j5', nom: 'Danielle' },
-        { id: 'j6', nom: 'Suzanne' },
-        { id: 'j7', nom: 'Hélène' },
-        { id: 'j8', nom: 'Brigitte' }
-      ];
+    // Liste initiale par défaut si le localStorage est vide
+    const listeInitiale = ["Diane", "Céline", "Sylvie", "Francine", "Danielle", "Suzanne", "Hélène", "Brigitte"];
 
-      // Filtrer pour ne garder que celles qui sont cochées
-      let presentes = joueuses
-        .filter(j => document.getElementById(j.id).checked)
-        .map(j => j.nom);
+    // Charger les joueuses depuis le localStorage ou utiliser la liste initiale
+    let joueuses = JSON.parse(localStorage.getItem("badminton_ninjas"));
+    if (!joueuses) {
+      joueuses = listeInitiale.map(nom => ({ nom: nom, presente: true }));
+      sauvegarder();
+    }
 
-      // Mélanger la liste au hasard
-      for (let i = presentes.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [presentes[i], presentes[j]] = [presentes[j], presentes[i]];
+    // Sauvegarder dans le localStorage
+    function sauvegarder() {
+      localStorage.setItem("badminton_ninjas", JSON.stringify(joueuses));
+    }
+
+    // Afficher la liste à l'écran
+    function afficherListe() {
+      const conteneur = document.getElementById("listeJoueuses");
+      conteneur.innerHTML = "";
+
+      joueuses.forEach((joueuse, index) => {
+        const item = document.createElement("div");
+        item.className = "joueuse-item";
+
+        const gauche = document.createElement("div");
+        gauche.className = "joueuse-gauche";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = joueuse.presente;
+        checkbox.onclick = () => {
+          joueuses[index].presente = checkbox.checked;
+          sauvegarder();
+        };
+
+        const label = document.createElement("span");
+        label.className = "nom-joueuse";
+        label.textContent = joueuse.nom;
+
+        gauche.appendChild(checkbox);
+        gauche.appendChild(label);
+
+        const btnSupprimer = document.createElement("button");
+        btnSupprimer.className = "btn-supprimer";
+        btnSupprimer.textContent = "Supprimer";
+        btnSupprimer.onclick = () => {
+          joueuses.splice(index, 1);
+          sauvegarder();
+          afficherListe();
+        };
+
+        item.appendChild(gauche);
+        item.appendChild(btnSupprimer);
+        conteneur.appendChild(item);
+      });
+    }
+
+    // Ajouter une nouvelle joueuse
+    function ajouterJoueuse() {
+      const input = document.getElementById("nouveauNom");
+      const nom = input.value.trim();
+      if (nom !== "") {
+        joueuses.push({ nom: nom, presente: true });
+        sauvegarder();
+        input.value = "";
+        afficherListe();
       }
+    }
 
-      const divResultats = document.getElementById('resultats');
-      divResultats.innerHTML = '';
+    // Générer la rotation aléatoire pour un terrain unique
+    function genererRotation() {
+      const presentes = joueuses.filter(j => j.presente).map(j => j.nom);
+      const zoneResultats = document.getElementById("zoneResultats");
+      zoneResultats.innerHTML = "";
 
       if (presentes.length < 4) {
-        divResultats.innerHTML = '<p style="color: red; text-align: center;">Il faut au moins 4 joueuses pour faire un match !</p>';
+        zoneResultats.innerHTML = "<p style='color: #e74c3c; font-weight: bold; text-align: center;'>Il faut au moins 4 joueuses présentes pour former un match sur le terrain.</p>";
         return;
       }
 
-      // Terrain 1 (4 premières joueuses)
-      let html = '<div class="terrain"><h3>Terrain 1</h3>';
-      html += '<div class="equipe"><strong>Équipe A :</strong> ' + presentes[0] + ' et ' + presentes[1] + '</div>';
-      html += '<div class="equipe"><strong>Équipe B :</strong> ' + presentes[2] + ' et ' + presentes[3] + '</div>';
-      html += '</div>';
-
-      // Terrain 2 (si au moins 8 joueuses)
-      if (presentes.length >= 8) {
-        html += '<div class="terrain"><h3>Terrain 2</h3>';
-        html += '<div class="equipe"><strong>Équipe A :</strong> ' + presentes[4] + ' et ' + presentes[5] + '</div>';
-        html += '<div class="equipe"><strong>Équipe B :</strong> ' + presentes[6] + ' et ' + presentes[7] + '</div>';
-        html += '</div>';
-      } 
-      // S'il y a des remplaçantes (entre 5 et 7 joueuses)
-      else if (presentes.length > 4) {
-        html += '<div class="terrain" style="background: #fff3e0; border-color: #ff9800;">';
-        html += '<h3 style="color: #e65100; border-color: #ffe0b2;">En attente / Rotation</h3>';
-        let enAttente = presentes.slice(4);
-        html += '<div class="equipe"><strong>Joueuses en pause :</strong> ' + enAttente.join(', ') + '</div>';
-        html += '</div>';
+      // Mélanger les joueuses disponibles au hasard
+      const copiePresentes = [...presentes];
+      for (let i = copiePresentes.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copiePresentes[i], copiePresentes[j]] = [copiePresentes[j], copiePresentes[i]];
       }
 
-      divResultats.innerHTML = html;
+      // Sélectionner les 4 premières pour le terrain
+      const surTerrain = copiePresentes.slice(0, 4);
+      const enAttente = copiePresentes.slice(4);
+
+      // Affichage du terrain unique
+      let html = `<div class="terrain">
+        <h3>🏸 Terrain Unique</h3>
+        <div class="equipe"><strong>Équipe 1 :</strong> ${surTerrain[0]} & ${surTerrain[1]}</div>
+        <div class="equipe"><strong>Équipe 2 :</strong> ${surTerrain[2]} & ${surTerrain[3]}</div>
+      </div>`;
+
+      // Affichage des joueuses en attente de rotation
+      if (enAttente.length > 0) {
+        html += `<div class="attente">
+          <h3>⏳ En Attente / Prochaine Rotation</h3>
+          <div class="equipe"><strong>Joueuses en pause :</strong> ${enAttente.join(", ")}</div>
+        </div>`;
+      }
+
+      zoneResultats.innerHTML = html;
     }
+
+    // Initialisation au chargement de la page
+    afficherListe();
   </script>
 
 </body>
